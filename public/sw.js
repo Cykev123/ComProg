@@ -47,6 +47,11 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
+  // Skip caching unsupported schemes (like chrome-extension:// or data://)
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+    return;
+  }
+
   // Always go to network for API requests
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(
