@@ -27,17 +27,28 @@ app.use(session({
 // ── MySQL Connection Pool ──────────────────────────────────────────────────
 let pool;
 if (process.env.DATABASE_URL) {
-  // Connection via Cloud URL
+  // Connection via full Cloud URL (e.g. mysql://user:pass@host:port/db)
   pool = mysql.createPool(process.env.DATABASE_URL);
-} else {
-  // Connection via individual credentials (with local fallback)
+} else if (process.env.MYSQLHOST) {
+  // Railway auto-injects these variables when a MySQL service is linked
   pool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
+    host:     process.env.MYSQLHOST,
+    user:     process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
+    port:     parseInt(process.env.MYSQLPORT || '3306'),
+    ssl: { rejectUnauthorized: false },
+    waitForConnections: true,
+    connectionLimit: 10
+  });
+} else {
+  // Local fallback
+  pool = mysql.createPool({
+    host:     process.env.DB_HOST     || 'localhost',
+    user:     process.env.DB_USER     || 'root',
     password: process.env.DB_PASSWORD || '12345678',
-    database: process.env.DB_NAME || 'findit_db',
-    port: parseInt(process.env.DB_PORT || '3306'),
-    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+    database: process.env.DB_NAME     || 'findit_db',
+    port:     parseInt(process.env.DB_PORT || '3306'),
     waitForConnections: true,
     connectionLimit: 10
   });
