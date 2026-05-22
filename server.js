@@ -50,7 +50,7 @@ if (process.env.DATABASE_URL) {
     console.log('✅ MySQL connected to database');
     conn.release();
   } catch (err) {
-    console.error('❌ MySQL connection failed:', err.message);
+    console.error('❌ MySQL connection failed:', err);
     console.error('   Make sure MySQL is running and database exists.');
     console.error('   Run: mysql -u root < database/schema.sql');
   }
