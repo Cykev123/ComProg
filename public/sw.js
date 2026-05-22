@@ -3,7 +3,7 @@
 // Caches static assets for offline support
 // =============================================
 
-const CACHE_NAME = 'findit-v1';
+const CACHE_NAME = 'findit-v2';
 
 // Static assets to pre-cache on install
 const STATIC_ASSETS = [
