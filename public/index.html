@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FindIt — Lost & Found | STI College</title>
+  <meta name="description"
+    content="FindIt — A community-powered lost and found platform for STI College. Report missing items, browse what's been found, and get reunited with your belongings.">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1a2f5e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FindIt">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Nunito+Sans:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- ── TOP BAR ── -->
+  <div class="top-bar">
+    <span>📧 findit@sti.edu &nbsp;|&nbsp; 📞 (02) 8123-4567</span>
+    <span><a href="#">STI Portal</a> &nbsp;|&nbsp; <a href="#">Student Handbook</a></span>
+  </div>
+
+  <!-- ── NAVIGATION ── -->
+  <nav id="main-nav">
+    <div class="logo">Find<span>It</span></div>
+    <div class="nav-links">
+      <button class="active" onclick="showPage('home',this)">Home</button>
+      <button onclick="showPage('browse',this)">Browse</button>
+      <button onclick="showPage('report',this)">Report</button>
+      <button onclick="showPage('admin',this)">Admin</button>
+    </div>
+    <div class="nav-right">
+      <div class="badge-dot"></div>
+      <div class="avatar" onclick="showPage('profile',document.querySelector('.nav-links button:last-of-type'))">
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HOME PAGE ── -->
+  <div id="page-home" class="page active">
+    <div class="hero">
+      <div class="hero-decor"></div>
+      <div class="hero-decor-2"></div>
+      <h1>Lost something?<br>We'll help you <em>find it.</em></h1>
+      <p>A community-powered lost & found platform for STI College. Report missing items, browse what's been found, and
+        get reunited with your belongings.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showPage('report',null,'lost')">Report Lost Item</button>
+        <button class="btn-outline" onclick="showPage('report',null,'found')">I Found Something</button>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="num">142</div>
+        <div class="label">Items reported this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">89</div>
+        <div class="label">Items successfully returned</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">63%</div>
+        <div class="label">Recovery rate</div>
+      </div>
+    </div>
+    <div class="section-title">Recent Activity</div>
+    <div class="items-grid" id="home-grid"></div>
+  </div>
+
+  <!-- ── BROWSE PAGE ── -->
+  <div id="page-browse" class="page">
+    <div style="margin-bottom:1.5rem">
+      <h1
+        style="font-family:'Rubik',sans-serif;font-size:2rem;margin-bottom:4px;font-weight:700;color:var(--sti-blue-dark)">
+        Browse Items</h1>
+      <p style="color:var(--muted);font-size:0.9rem">Search through all reported lost and found items</p>
+    </div>
+    <div class="filters-bar">
+      <div class="search-box">
+        <span class="icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search by name, location, description…"
+          oninput="filterItems()">
+      </div>
+      <select class="filter-select" id="filter-status" onchange="filterItems()">
+        <option value="">All Status</option>
+        <option value="lost">Lost</option>
+        <option value="found">Found</option>
+        <option value="claimed">Claimed</option>
+      </select>
+      <select class="filter-select" id="filter-date" onchange="filterItems()">
+        <option value="">Any Date</option>
+        <option value="today">Today</option>
+        <option value="week">This Week</option>
+        <option value="month">This Month</option>
+      </select>
+      <select class="filter-select" id="filter-cat" onchange="filterItems()">
+        <option value="">All Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="clothing">Clothing</option>
+        <option value="accessories">Accessories</option>
+        <option value="documents">Documents</option>
+        <option value="pets">Pets</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="items-grid" id="browse-grid"></div>
+  </div>
+
+  <!-- ── REPORT PAGE ── -->
+  <div id="page-report" class="page">
+    <div class="form-card">
+      <h2 id="report-title">Report an Item</h2>
+      <p class="sub">Fill in the details below. The more specific, the better your chances.</p>
+
+      <div class="form-group">
+        <label>Item Type</label>
+        <div style="display:flex;gap:0.75rem">
+          <label
+            style="display:flex;align-items:center;gap:6px;font-size:0.9rem;cursor:pointer;text-transform:none;letter-spacing:0;color:var(--text);font-weight:400">
+            <input type="radio" name="item-type" value="lost" id="type-lost" checked> 🔴 I <strong>Lost</strong> this
+            item
+          </label>
+          <label
+            style="display:flex;align-items:center;gap:6px;font-size:0.9rem;cursor:pointer;text-transform:none;letter-spacing:0;color:var(--text);font-weight:400">
+            <input type="radio" name="item-type" value="found" id="type-found"> 🟢 I <strong>Found</strong> this item
+          </label>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Item Name *</label>
+          <input type="text" id="item-name" placeholder="e.g. Black iPhone 14">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="item-category">
+            <option>Electronics</option>
+            <option>Clothing</option>
+            <option>Accessories</option>
+            <option>Documents</option>
+            <option>Pets</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date Lost/Found *</label>
+          <input type="date" id="item-date">
+        </div>
+        <div class="form-group">
+          <label>Location *</label>
+          <input type="text" id="item-location" placeholder="e.g. SM Mall, 2nd Floor">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="item-desc" rows="3" placeholder="Color, brand, distinguishing features…"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Upload Photos</label>
+        <div class="upload-zone" onclick="triggerUpload()">
+          <div class="icon">📷</div>
+          <div style="font-weight:700;margin-bottom:4px">Click to upload photos</div>
+          <div style="font-size:0.8rem">PNG, JPG up to 10MB each</div>
+        </div>
+        <input type="file" id="file-input" accept="image/*" multiple style="display:none"
+          onchange="handleUpload(event)">
+        <div class="upload-preview" id="upload-preview"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Contact Info</label>
+        <input type="text" id="item-contact" placeholder="Phone number or email">
+      </div>
+
+      <button class="btn-full" onclick="submitReport()">Submit Report</button>
+    </div>
+  </div>
+
+  <!-- ── PROFILE PAGE ── -->
+  <div id="page-profile" class="page">
+    <div class="profile-header">
+      <div class="profile-avatar">JP</div>
+      <div class="profile-info">
+        <h2>Johnpaul Reyes</h2>
+        <p>johnpaul.reyes@email.com · Member since Jan 2024</p>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('my-posts',this)">My Posts</button>
+      <button class="tab-btn" onclick="switchTab('my-claims',this)">My Claims</button>
+      <button class="tab-btn" onclick="switchTab('account',this)">Account Settings</button>
+    </div>
+
+    <div id="tab-my-posts" class="tab-content active">
+      <div class="items-grid" id="my-posts-grid"></div>
+    </div>
+
+    <div id="tab-my-claims" class="tab-content">
+      <div class="claims-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Date Filed</th>
+              <th>Status</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="my-claims-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tab-account" class="tab-content">
+      <div class="form-card" style="border:none;padding:0;box-shadow:none">
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" id="p-first"></div>
+          <div class="form-group"><label>Last Name</label><input type="text" id="p-last"></div>
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" id="p-email"></div>
+        <div class="form-group"><label>Phone</label><input type="text" id="p-phone"></div>
+        <div class="form-group"><label>New Password</label><input type="password" id="p-pass"
+            placeholder="Leave blank to keep current"></div>
+        <button class="btn-full" style="max-width:200px" onclick="updateProfile()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ADMIN PAGE ── -->
+  <div id="page-admin" class="page">
+    <div style="margin-bottom:1.5rem">
+      <h1
+        style="font-family:'Rubik',sans-serif;font-size:2rem;margin-bottom:4px;font-weight:700;color:var(--sti-blue-dark)">
+        Admin Dashboard</h1>
+      <p style="color:var(--muted);font-size:0.9rem">Manage items, verify claims, and oversee activity</p>
+    </div>
+
+    <div class="admin-grid">
+      <div class="admin-stat">
+        <div class="admin-icon" style="background:var(--red-bg)">🔴</div>
+        <div>
+          <div style="font-size:1.8rem;font-weight:700;font-family:'Rubik',sans-serif;color:var(--sti-blue-dark)"
+            id="a-lost">0</div>
+          <div style="font-size:0.8rem;color:var(--muted);font-weight:600">Lost Items</div>
+        </div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-icon" style="background:var(--green-bg)">🟢</div>
+        <div>
+          <div style="font-size:1.8rem;font-weight:700;font-family:'Rubik',sans-serif;color:var(--sti-blue-dark)"
+            id="a-found">0</div>
+          <div style="font-size:0.8rem;color:var(--muted);font-weight:600">Found Items</div>
+        </div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-icon" style="background:var(--amber-bg)">📋</div>
+        <div>
+          <div style="font-size:1.8rem;font-weight:700;font-family:'Rubik',sans-serif;color:var(--sti-blue-dark)"
+            id="a-claims">0</div>
+          <div style="font-size:0.8rem;color:var(--muted);font-weight:600">Pending Claims</div>
+        </div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-icon" style="background:var(--blue-bg)">✅</div>
+        <div>
+          <div style="font-size:1.8rem;font-weight:700;font-family:'Rubik',sans-serif;color:var(--sti-blue-dark)"
+            id="a-claimed">0</div>
+          <div style="font-size:0.8rem;color:var(--muted);font-weight:600">Claimed Items</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Pending Claim Verifications</div>
+    <div class="claims-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Claimant</th>
+            <th>Description</th>
+            <th>Date Filed</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="admin-claims-body"></tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:2rem">
+      <div class="section-title">All Items</div>
+      <div class="items-grid" id="admin-items-grid"></div>
+    </div>
+  </div>
+
+  <!-- ── ITEM DETAIL MODAL ── -->
+  <div class="modal-overlay" id="item-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-photo" id="modal-photo"></div>
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem">
+        <h3 id="modal-title"></h3>
+        <span class="item-badge" id="modal-badge"></span>
+      </div>
+      <div class="detail-row"><span class="detail-label">📅 Date</span><span id="modal-date"></span></div>
+      <div class="detail-row"><span class="detail-label">📍 Location</span><span id="modal-location"></span></div>
+      <div class="detail-row"><span class="detail-label">🏷️ Category</span><span id="modal-category"></span></div>
+      <div class="detail-row"><span class="detail-label">👤 Posted by</span><span id="modal-poster"></span></div>
+      <div class="detail-row"><span class="detail-label">📝 Description</span><span id="modal-desc"></span></div>
+      <hr class="divider">
+      <div id="modal-claim-section" class="claim-form">
+        <h4>📬 Submit a Claim Request</h4>
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="claim-name" placeholder="Full name">
+        </div>
+        <div class="form-group">
+          <label>Proof of ownership</label>
+          <textarea id="claim-proof" rows="2" placeholder="Describe something only the owner would know…"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Contact Number</label>
+          <input type="text" id="claim-contact" placeholder="+63 9XX XXX XXXX">
+        </div>
+        <button class="btn-full" onclick="submitClaim()">Submit Claim Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOAST NOTIFICATION ── -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer-bar">
+    <strong>FindIt</strong> — Lost & Found Platform · © 2024 STI College · All rights reserved
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('[PWA] Service Worker registered:', reg.scope))
+          .catch(err => console.warn('[PWA] Service Worker failed:', err));
+      });
+    }
+  </script>
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('main-nav');
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Scroll reveal animation
+    const revealElements = document.querySelectorAll('.stat-card, .item-card, .admin-stat');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animation = 'fadeInUp 0.5s ease forwards';
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  </script>
+</body>
+
+</html>

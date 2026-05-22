@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | FindIt STI</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1a2f5e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { background: var(--surface2); }
+  </style>
+</head>
+<body>
+
+  <!-- ── TOP BAR ── -->
+  <div class="top-bar">
+    <span>🔒 ADMIN DASHBOARD</span>
+    <span><a href="/index.html">← Back to Main Site</a></span>
+  </div>
+
+  <nav id="main-nav">
+    <div class="logo">Find<span>It</span> <span style="font-size:0.9rem; color:var(--red); font-family:'Nunito Sans',sans-serif; margin-left: 10px;">ADMIN</span></div>
+    <div class="nav-right">
+      <button class="btn-sm ghost" onclick="logout()">Logout</button>
+      <div class="avatar">AD</div>
+    </div>
+  </nav>
+
+  <div class="page active" style="padding-top: 3rem;">
+    <div style="margin-bottom:2rem">
+      <h1 style="font-family:'Rubik',sans-serif;font-size:2rem;margin-bottom:4px;font-weight:700;color:var(--sti-blue-dark)">Admin Dashboard</h1>
+      <p style="color:var(--muted);font-size:0.9rem">Manage items, verify claims, and oversee activity</p>
+    </div>
+
+    <div class="admin-grid">
+      <div class="admin-stat">
+        <div class="admin-icon" style="background:var(--red-bg)">🔴</div>
+        <div>
+          <div style="font-size:1.8rem;font-weight:700;font-family:'Rubik',sans-serif;color:var(--sti-blue-dark)" id="a-lost">0</div>
+          <div style="font-size:0.8rem;color:var(--muted);font-weight:600">Lost Items</div>
+        </div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-icon" style="background:var(--green-bg)">🟢</div>
+        <div>
+          <div style="font-size:1.8rem;font-weight:700;font-family:'Rubik',sans-serif;color:var(--sti-blue-dark)" id="a-found">0</div>
+          <div style="font-size:0.8rem;color:var(--muted);font-weight:600">Found Items</div>
+        </div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-icon" style="background:var(--amber-bg)">📋</div>
+        <div>
+          <div style="font-size:1.8rem;font-weight:700;font-family:'Rubik',sans-serif;color:var(--sti-blue-dark)" id="a-claims">0</div>
+          <div style="font-size:0.8rem;color:var(--muted);font-weight:600">Pending Claims</div>
+        </div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-icon" style="background:var(--blue-bg)">✅</div>
+        <div>
+          <div style="font-size:1.8rem;font-weight:700;font-family:'Rubik',sans-serif;color:var(--sti-blue-dark)" id="a-claimed">0</div>
+          <div style="font-size:0.8rem;color:var(--muted);font-weight:600">Claimed Items</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Pending Claim Verifications</div>
+    <div class="claims-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Claimant</th>
+            <th>Proof / Contact</th>
+            <th>Date Filed</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="admin-claims-body"></tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:3rem">
+      <div class="section-title">All Items Management</div>
+      <div class="items-grid" id="admin-items-grid"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

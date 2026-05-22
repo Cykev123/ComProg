@@ -1,0 +1,16 @@
+{
+  "name": "findit-lost-and-found",
+  "version": "1.0.0",
+  "description": "FindIt — Lost & Found Platform for STI College",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mysql2": "^3.6.5",
+    "bcryptjs": "^2.4.3"
+  }
+}
